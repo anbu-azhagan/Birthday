@@ -1,0 +1,127 @@
+# 🎉 Celebrations App – Build Your APK
+
+## What's in this project
+A full Android app that tracks birthdays & anniversaries for 2500+ contacts,
+with PERSISTENT storage (data never lost on cache clear) and real Android notifications.
+
+---
+
+## ✅ EASIEST METHOD: Build APK in 5 Minutes (Free)
+
+### Option A: Android Studio (Recommended)
+
+**Step 1: Install Android Studio**
+- Download free from: https://developer.android.com/studio
+- Install it (takes ~10 mins, ~4GB)
+
+**Step 2: Open the Project**
+- Open Android Studio
+- Click "Open" → Select the `CelebrationsApp` folder you extracted
+- Wait for Gradle sync to complete (~2-3 mins first time)
+
+**Step 3: Build the APK**
+- Menu: Build → Build Bundle(s) / APK(s) → Build APK(s)
+- Wait ~1-2 minutes
+- Click "locate" in the popup to find your APK
+
+**Step 4: Install on your phone**
+- Connect phone via USB, OR
+- Copy APK to phone → open it in Files app
+- Enable "Install from unknown sources" if prompted (Settings → Security)
+
+---
+
+### Option B: Build Online (No Installation Needed)
+
+1. Go to **https://appetize.io** or **https://www.browserstack.com**
+2. Upload this project to **GitHub** (free at github.com)
+3. Use **GitHub Actions** to auto-build the APK (free CI/CD)
+
+**GitHub Actions workflow** — create `.github/workflows/build.yml`:
+```yaml
+name: Build APK
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build APK
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: celebrations-app
+          path: app/build/outputs/apk/debug/app-debug.apk
+```
+Your APK will be downloadable from the GitHub Actions "Artifacts" section!
+
+---
+
+## 📱 App Features
+
+| Feature | Details |
+|---------|---------|
+| **Storage** | IndexedDB (never cleared by cache/history clear) |
+| **Notifications** | Native Android AlarmManager – works even when app is closed |
+| **Contacts** | Supports 2500+ contacts with fast alphabetical search |
+| **Reminders** | Configurable: On day, 1 day, 3 days, 1 week, 2 weeks before |
+| **Import** | Bulk import from CSV file |
+| **Export** | Export all contacts to CSV |
+| **Backup** | Export CSV and keep it safe |
+
+---
+
+## 🔔 How Notifications Work
+
+The app uses **Android's AlarmManager** which:
+- Fires notifications even when the app is CLOSED
+- Survives phone restarts (BOOT_COMPLETED receiver)
+- Is NOT affected by battery optimization (uses exact alarms)
+- Shows notification at 9:00 AM on the reminder day
+
+---
+
+## 📁 Project Structure
+
+```
+CelebrationsApp/
+├── app/src/main/
+│   ├── AndroidManifest.xml       ← App permissions & components
+│   ├── assets/
+│   │   └── app.html              ← The full app UI (HTML/CSS/JS)
+│   ├── java/com/celebrations/app/
+│   │   ├── MainActivity.java     ← WebView wrapper + Android bridge
+│   │   ├── AlarmReceiver.java    ← Handles notification alarms
+│   │   └── NotificationService.java
+│   └── res/
+│       ├── layout/activity_main.xml
+│       └── values/styles.xml
+├── build.gradle
+└── settings.gradle
+```
+
+---
+
+## 🛠 Troubleshooting
+
+**"Install blocked"** → Go to Settings → Security → Enable "Unknown Sources"
+
+**Notifications not showing** → 
+- Settings → Apps → Celebrations → Notifications → Enable All
+- Settings → Battery → Celebrations → Don't optimize
+
+**Gradle sync fails** → 
+- File → Invalidate Caches and Restart
+- Check internet connection (Gradle needs to download dependencies)
+
+---
+
+## 📞 Support
+Built with ❤️ using Android WebView + IndexedDB + AlarmManager
